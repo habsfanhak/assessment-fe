@@ -5,6 +5,7 @@ import { useState } from "react"
 import { addTask } from "@/lib/api"
 
 import Head from "next/head"
+import { useRouter } from "next/router"
 
 export default function AddTask() {
     //Form Variables
@@ -12,6 +13,9 @@ export default function AddTask() {
     const [taskDescriptionName, setTaskDescriptionName] = useState("")
     const [taskStatus, setTaskStatus] = useState("Incomplete")
     const [taskPriority, setTaskPriority] = useState("")
+
+    //Router
+    const router = useRouter()
 
     //Messages
     const [success, setSuccess] = useState("")
@@ -24,10 +28,7 @@ export default function AddTask() {
         try{
             await addTask(taskName, taskDescriptionName, taskStatus, taskPriority, dateAdded);    
             setSuccess("Task added successfully.")
-            setTaskName("")
-            setTaskDescriptionName("")
-            setTaskPriority("")
-            setWarning("")
+            router.reload()
 
         }catch(err){
             setWarning("Error submitting task.")

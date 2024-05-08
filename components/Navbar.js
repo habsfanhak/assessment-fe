@@ -7,6 +7,7 @@ export default function TaskNavbar() {
     return (
         <>
             <Navbar bg="dark" data-bs-theme="dark">
+                <Navbar.Brand style={{paddingLeft: '10px'}}>MERN Stack Task Application</Navbar.Brand>
                 <Container>
                     <Nav>
                         <Link href="/" passHref legacyBehavior><Nav.Link className="px-4">Home</Nav.Link></Link>

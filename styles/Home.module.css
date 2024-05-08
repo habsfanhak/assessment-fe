@@ -17,3 +17,10 @@
     background: linear-gradient(to top right, white, #ff5757);
     border-color: #ff5757;
 }
+
+.refresh_btn {
+    border: 2px solid #0066FF;
+    padding: 4px;
+    float: right;
+    cursor: pointer;
+}

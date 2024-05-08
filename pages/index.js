@@ -3,10 +3,11 @@ import { Container, Row, Col, Card, Form, Tabs, Tab, Offcanvas, Button, Alert } 
 import { getTasks, updateTask, deleteTask } from "@/lib/api"
 import { useAtom } from "jotai"
 import { dataAtom } from "@/store"
-import { dateFormatted } from "@/lib/utility"
+import { dateFormatted, timestamp } from "@/lib/utility"
 
 import { useEffect } from "react"
 import { useState } from "react"
+import { useRouter } from "next/router"
 
 import styles from '../styles/Home.module.css'
 import Image from "next/image"
@@ -17,11 +18,17 @@ export default function Home() {
   const [data, setData] = useAtom(dataAtom)
   const [dataCopy, setDataCopy] = useState([])
 
+  //Search Val
+  const [search, setSearch] = useState("")
+
+  //Router
+  const router = useRouter()
+
   //OffCanvas Essentials
   const [showCanvas, setShowCanvas] = useState(false);
   const [activeObject, setActiveObject] = useState(null)
 
-  //Sorting and Filtering
+  //Filtering
   const [sortVal, setSortVal] = useState("")
   const [key, setKey] = useState("All Tasks");
 
@@ -35,9 +42,16 @@ export default function Home() {
   const [success, setSuccess] = useState("")
   const [warning, setWarning] = useState("")
 
+  //Timestamp
+  const [currentDate, setCurrentDate] = useState(new Date())
+
 
   //Functions to handle offcanvas show ops
-  const handleCloseCanvas = () => setShowCanvas(false);
+  function handleCloseCanvas() {
+    setShowCanvas(false);
+    router.reload()
+  }
+
   function handleShowCanvas(object) {
     setActiveObject(object)
 
@@ -71,6 +85,7 @@ export default function Home() {
   useEffect(() => {
     if (key == "All Tasks") {
       setDataCopy(data)
+      taskSearch()
     }
     else {
       const filter = data.filter(task => {
@@ -82,11 +97,43 @@ export default function Home() {
         return true; // Default case
       });
 
-      setDataCopy(filter)
+      const searchFiltered = keyCaseFilter(filter)
+
+      setDataCopy(searchFiltered)
       handleSort(sortVal)
     }
 
   }, [key])
+
+  //Filtering in the case where the key was updated so filtered results are further filtered
+  function keyCaseFilter(filteredData) {
+    if (search.length == 0) {
+      return filteredData
+    }
+
+    filteredData = filteredData.filter(task => {
+      const taskNameMatches = task.taskName.toLowerCase().includes(search.toLowerCase());
+      const taskDescriptionMatches = task.taskDescription.toLowerCase().includes(search.toLowerCase());
+      return taskNameMatches || taskDescriptionMatches;
+    })
+
+    return filteredData;
+  }
+
+  //Filters data based on search field val
+  function taskSearch() {
+    if (search.length == 0) {
+      return setDataCopy(data)
+    }
+
+    const filteredData = data.filter(task => {
+      const taskNameMatches = task.taskName.toLowerCase().includes(search.toLowerCase());
+      const taskDescriptionMatches = task.taskDescription.toLowerCase().includes(search.toLowerCase());
+      return taskNameMatches || taskDescriptionMatches;
+    })
+
+    setDataCopy(filteredData);
+  }
   
   //Adding this function to change up conditional styling based on each cards individual priority
   function priorityStyle(priority) {
@@ -100,6 +147,11 @@ export default function Home() {
       default:
         return '';
     }
+  }
+
+  //Handles the refresh button onClick
+  function reload() {
+    router.reload()
   }
 
   //Handles the sort after the user selects a value out of the select field
@@ -167,11 +219,20 @@ export default function Home() {
       <meta name="description" content="Details of your tasks and forms to edit and delete the ones you've created."></meta>
     </Head>
       <Container>
-        <br/>
+        <br />
+        <div style={{float: 'right'}}>
+          {timestamp()}
+        </div>
+        <h2>Tasks</h2>
+        <hr/>
         <Row>
           <Col md={6} xs={12}>
+              <Form.Label>Search</Form.Label>
+              <Form.Control required type="text" id="searchTask" name="searchTask" onChange={e => setSearch(e.target.value)} />
+          </Col>
+          <Col md={6} xs={12}>
             <Form.Label>Sort By</Form.Label>
-            <Form.Select id="taskStatus" name="taskStatus" onChange={e => handleSort(e.target.value)}>
+            <Form.Select id="sortTask" name="sortTask" onChange={e => handleSort(e.target.value)}>
                 <option value="" selected disabled></option>
                 <option value="Priority">Priority</option>
                 <option value="Status">Status</option>
@@ -180,6 +241,8 @@ export default function Home() {
           </Col>
         </Row>
         <br/>
+        <Button variant="outline-primary"  onClick={() => taskSearch()}>Search</Button>
+        <br/><br/>
 
       <Tabs
       id="controlled-tab-example"
@@ -194,6 +257,10 @@ export default function Home() {
         <Tab eventKey="Completed Tasks" title="Completed Tasks">
         </Tab>
       </Tabs>
+
+      
+      <Image src="/refresh.svg" height={30} width={30} className={`rounded ${styles.refresh_btn}`} onClick={() => reload()}/>
+      <br/><br/>
         
         <Row>
             {dataCopy.map(task => (

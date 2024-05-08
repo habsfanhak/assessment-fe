@@ -1,4 +1,4 @@
-This is the front-end for the STIKBOOK coding assessment. 
+This is the front-end for the STIKBOOK coding assessment. Live deployment at https://assessment-fe-zeta.vercel.app/
 
 You can run 'npm i' to install all required packages.
 

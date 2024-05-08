@@ -42,10 +42,6 @@ export default function Home() {
   const [success, setSuccess] = useState("")
   const [warning, setWarning] = useState("")
 
-  //Timestamp
-  const [currentDate, setCurrentDate] = useState(new Date())
-
-
   //Functions to handle offcanvas show ops
   function handleCloseCanvas() {
     setShowCanvas(false);

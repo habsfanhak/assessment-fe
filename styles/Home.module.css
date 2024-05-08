@@ -21,6 +21,6 @@
 .refresh_btn {
     border: 2px solid #0066FF;
     padding: 4px;
-    float: right;
     cursor: pointer;
+    margin-left: 15px;
 }

@@ -237,7 +237,10 @@ export default function Home() {
           </Col>
         </Row>
         <br/>
-        <Button variant="outline-primary"  onClick={() => taskSearch()}>Search</Button>
+
+          <Button variant="outline-primary"  onClick={() => taskSearch()}>Search</Button>
+          <Image src="/refresh.svg" height={37} width={37} className={`rounded ${styles.refresh_btn}`} onClick={() => reload()}/>
+
         <br/><br/>
 
       <Tabs
@@ -253,11 +256,6 @@ export default function Home() {
         <Tab eventKey="Completed Tasks" title="Completed Tasks">
         </Tab>
       </Tabs>
-
-      
-      <Image src="/refresh.svg" height={30} width={30} className={`rounded ${styles.refresh_btn}`} onClick={() => reload()}/>
-      <br/><br/>
-        
         <Row>
             {dataCopy.map(task => (
               <Col md={3} xs={12} key={task._id}>

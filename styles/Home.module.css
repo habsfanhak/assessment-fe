@@ -1,0 +1,19 @@
+.custom_card {
+    min-height: 20vh;
+    margin-bottom: 20px;
+}
+
+.low_priority_card {
+    background: linear-gradient(to top right, white, #b1e8fd);
+    border-color: #b1e8fd;
+}
+
+.medium_priority_card {
+    background: linear-gradient(to top right, white, #f7ff84);
+    border-color: #cef2ac;
+}
+
+.high_priority_card {
+    background: linear-gradient(to top right, white, #ff5757);
+    border-color: #ff5757;
+}

@@ -47,7 +47,6 @@ export default function Home() {
     setShowCanvas(false);
     router.reload()
   }
-
   function handleShowCanvas(object) {
     setActiveObject(object)
 
@@ -161,9 +160,11 @@ export default function Home() {
         if (a.taskPriority === "Medium" && b.taskPriority !== "High") return -1
         return 0
       })
-    } else if (sortType === "Date Added") {
+    } 
+    else if (sortType === "Date Added") {
       dataCopy.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
-    } else if (sortType === "Status") {
+    } 
+    else if (sortType === "Status") {
       dataCopy.sort((a, b) => {
         if (a.taskStatus === "Incomplete" && b.taskStatus !== "Incomplete") return -1
         if (a.taskStatus === "In Progress" && b.taskStatus !== "Incomplete") return -1
@@ -189,7 +190,6 @@ export default function Home() {
 
   //Deleting a Task
   async function handleDelete() {
-
     try{
         await deleteTask(activeObject._id);    
         setSuccess("Task deleted successfully.")

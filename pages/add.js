@@ -21,6 +21,7 @@ export default function AddTask() {
     const [success, setSuccess] = useState("")
     const [warning, setWarning] = useState("")
 
+    //Handles button onSubmit to add task
     async function handleSubmit(e) {
         e.preventDefault();
         const dateAdded = new Date()   
